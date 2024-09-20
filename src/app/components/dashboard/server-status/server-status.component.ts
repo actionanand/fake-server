@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+// import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-server-status',
@@ -8,12 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './server-status.component.scss',
 })
 export class ServerStatusComponent implements OnInit {
+  // private interval?: NodeJS.Timeout;
+  // private interval?: ReturnType<typeof setInterval>;
+
+  destroyRef = inject(DestroyRef);
+
   currentStatus: 'online' | 'offline' | 'unkown' = 'online';
 
   constructor() {}
 
   ngOnInit() {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const rnd = Math.random();
 
       if (rnd < 0.5) {
@@ -24,5 +30,9 @@ export class ServerStatusComponent implements OnInit {
         this.currentStatus = 'unkown';
       }
     }, 5000);
+
+    this.destroyRef.onDestroy(() => {
+      clearInterval(interval);
+    });
   }
 }
