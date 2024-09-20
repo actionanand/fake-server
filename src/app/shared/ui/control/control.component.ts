@@ -1,5 +1,5 @@
-import { Component, input, ViewEncapsulation } from '@angular/core';
-// import { HostBinding, HostListener } from '@angular/core';
+import { Component, contentChild, ElementRef, input, ViewEncapsulation } from '@angular/core';
+// import { HostBinding, HostListener, ContentChild } from '@angular/core';
 
 @Component({
   selector: 'app-control',
@@ -23,7 +23,11 @@ export class ControlComponent {
 
   title = input.required<string>();
 
+  // @ContentChild('inputEl') private control?: ElementRef<HTMLInputElement | HTMLTextAreaElement>;
+  private control = contentChild.required<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('inputEl');
+
   logTheClick() {
     console.log('clicked!');
+    console.log(this.control());
   }
 }
